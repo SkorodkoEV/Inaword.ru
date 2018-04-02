@@ -2,13 +2,13 @@ pragma solidity ^0.4.18;
  
 contract BusinessCard {
     
-    string name;
+    string name = "Lisa";
     
-    uint age;
+    uint age = 26;
     
-    uint year;
+    uint year = 1991;
     
-    function getName() public constant returns (string) {
+    function getName() public view returns (string) {
         return name;
     }
     
@@ -16,7 +16,7 @@ contract BusinessCard {
         name = newName;
     }
     
-    function getAge() public constant returns (uint) {
+    function getAge() public view returns (uint) {
         return age;
     }
     
@@ -24,7 +24,7 @@ contract BusinessCard {
         age = newAge;
     }
     
-    function getYear() public constant returns (uint) {
+    function getYear() public view returns (uint) {
         return year;
     }
     
