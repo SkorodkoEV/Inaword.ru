@@ -1,11 +1,10 @@
-pragma solidity ^0.4.18;
- 
+pragma solidity 0.4.21;
+
+
 contract BusinessCard {
-    
     string name = "Lisa";
     
     uint age = 26;
-    
     uint year = 1991;
     
     function getName() public view returns (string) {
@@ -31,6 +30,4 @@ contract BusinessCard {
     function setYear(uint newYear) public {
         year = newYear;
     }
- 
- 
 }
