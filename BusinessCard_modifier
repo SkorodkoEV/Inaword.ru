@@ -6,7 +6,7 @@ contract BusinessCard {
     
     address owner;
     
-    constructor(BusinessCard) public {
+    constructor() public {
         owner = msg.sender;
     }
     
