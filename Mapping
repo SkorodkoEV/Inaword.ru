@@ -1,15 +1,15 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.24;
 
 contract BusinessCard {
     
     mapping (bytes32 => string) data;
     
     function setData(string key, string value) public {
-        data[keccak256(key)] = value;
+        data[keccak256(abi.encodePacked(key))] = value;
     }
     
     function getData(string key) public constant returns(string) {
-        return data[keccak256(key)];
+        return data[keccak256(abi.encodePacked(key))];
     }
  
 }
