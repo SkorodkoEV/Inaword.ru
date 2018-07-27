@@ -46,6 +46,20 @@ contract SimpleTokenCoin {
       totalSupply += _value;
       }
     
+    	
+    mappingm  (address => mapping (address => uint)) allowed;
+
+
+    function allowance(address _owner, address _spender) public constant returns (uint remaining) {
+        return allowed[_owner][_spender];
+    }
+    
+  
+    function approve(address _spender, uint _value) public returns (bool success) {
+        allowed[msg.sender][_spender] = _value;
+        Approval(msg.sender, _spender, _value);
+        return true;
+    }
    
     event Transfer(address indexed _from, address indexed _to, uint _value);
     
