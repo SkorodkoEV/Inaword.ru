@@ -14,7 +14,7 @@ contract BusinessCard {
         data[keccak256(abi.encodePacked(key))] = value;
     }
     
-    function getData(string key) public constant returns(string) {
+    function getData(string key) public view returns(string) {
         return data[keccak256(abi.encodePacked(key))];
     }
  
