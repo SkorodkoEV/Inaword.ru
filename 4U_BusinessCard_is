@@ -4,7 +4,7 @@ contract Ownable {
     
     address owner;
     
-  constructor() public {
+    constructor() public {
         owner = msg.sender;
     }
  
