@@ -20,6 +20,7 @@ contract BusinessCard {
     }
     
     function setAge(uint newAge) public {
+        require(newAge < 130);
         age = newAge;
     }
     
