@@ -9,6 +9,7 @@ contract BusinessCard {
     constructor() public {
         owner = msg.sender;
     }
+    
     function setData(string key, string value) public {
         require(msg.sender == owner);
         data[keccak256(abi.encodePacked(key))] = value;
