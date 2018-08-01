@@ -16,7 +16,7 @@ contract BusinessCard {
     
     function transferOwnership(address newOwner) public {
         require(msg.sender == owner);
-	owner = newOwner;
+        owner = newOwner;
     }
     
     function getData(string key) public constant returns(string) {
