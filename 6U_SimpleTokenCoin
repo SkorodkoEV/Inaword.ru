@@ -34,7 +34,7 @@ contract SimpleTokenCoin is Ownable {
     mapping (address => mapping(address => uint)) allowed;
     
     function mint(address _to, uint _value) public onlyOwner {
-        assert(totalSupply + _value >= totalSupply && balances[_to] + _value >= balances[_to]);
+        require(totalSupply + _value >= totalSupply && balances[_to] + _value >= balances[_to]);
         balances[_to] += _value;
         totalSupply += _value;
     }
