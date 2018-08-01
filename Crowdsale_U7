@@ -125,7 +125,7 @@ contract Ownable {
  
  
   
- constructor () public {
+  constructor () public {
     owner = msg.sender;
   }
  
@@ -182,25 +182,29 @@ contract MintableToken is StandardToken, Ownable {
 }
  
 
-
-contract Crowdsale is MintableToken {
+contract Crowdsale {
     
     address owner;
     
-    MintableToken public token = new MintableToken();
+MintableToken public token = new MintableToken();
     
-    uint start = 1534172400;
+    uint start = 1500379200;
     
     uint period = 28;
     
-   constructor () public {
+    constructor () public {
         owner = msg.sender;
     }
     
-  function() external payable {
+    function() external payable {
         require(now > start && now < start + period*24*60*60);
         owner.transfer(msg.value);
         token.mint(msg.sender, msg.value);
     }
-    
+   
+  function setSaleAgent(address newsaleAgnet) public {
+    require(msg.sender == saleAgent || msg.sender == owner);
+    saleAgent = newsaleAgnet;
+  }
+  
 }
