@@ -125,7 +125,7 @@ contract Ownable {
  
  
   
-  constructor() public {
+ constructor () public {
     owner = msg.sender;
   }
  
@@ -189,7 +189,7 @@ contract Crowdsale is MintableToken {
     
     MintableToken public token = new MintableToken();
     
-    uint start = 1533124620;
+    uint start = 1534172400;
     
     uint period = 28;
     
