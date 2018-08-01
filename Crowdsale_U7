@@ -110,7 +110,7 @@ contract StandardToken is ERC20, BasicToken {
     return true;
   }
  
-  function () public payable {
+  function () external payable {
     revert();
   }
  
@@ -187,17 +187,17 @@ contract Crowdsale is MintableToken {
     
     address owner;
     
-    SimpleTokenCoin public token = new SimpleTokenCoin();
+    MintableToken public token = new MintableToken();
     
-    uint start = 1500379200;
+    uint start = 1533124620;
     
     uint period = 28;
     
-    constructor () {
+   constructor () public {
         owner = msg.sender;
     }
     
-    function() external payable {
+  function() external payable {
         require(now > start && now < start + period*24*60*60);
         owner.transfer(msg.value);
         token.mint(msg.sender, msg.value);
