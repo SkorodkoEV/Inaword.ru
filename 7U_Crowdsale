@@ -202,9 +202,5 @@ MintableToken public token = new MintableToken();
         token.mint(msg.sender, msg.value);
     }
    
-  function setSaleAgent(address newsaleAgnet) public {
-    require(msg.sender == saleAgent || msg.sender == owner);
-    saleAgent = newsaleAgnet;
-  }
-  
+ 
 }
