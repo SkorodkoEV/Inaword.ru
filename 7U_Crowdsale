@@ -186,16 +186,21 @@ contract Crowdsale {
     
     address owner;
     
-MintableToken public token = new MintableToken();
-    
+   MintableToken public token = new MintableToken();
+
     uint start = 1500379200;
     
     uint period = 28;
     
     constructor () public {
-        owner = msg.sender;
+        owner = msg.sender;  
+        token.setSaleAgent(msg.sender)
     }
-    
+
+     function setSaleAgent() public {
+    token.setSaleAgent(adress(this));
+  }
+
     function() external payable {
         require(now > start && now < start + period*24*60*60);
         owner.transfer(msg.value);
