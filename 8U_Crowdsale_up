@@ -40,6 +40,7 @@ contract ERC20 is ERC20Basic {
 
 contract BasicToken is ERC20Basic {
   using SafeMath for uint256;
+  
   mapping(address => uint256) balances;
   
   function transfer(address _to, uint256 _value) public returns (bool) {
@@ -54,7 +55,6 @@ contract BasicToken is ERC20Basic {
   } 
 } 
  
-
 contract StandardToken is ERC20, BasicToken {
  
   mapping (address => mapping (address => uint256)) internal allowed;
@@ -85,7 +85,7 @@ contract StandardToken is ERC20, BasicToken {
 contract Ownable { 
   address public owner;
  
-  constructor () public {
+  constructor() public {
   owner = msg.sender;
   }
  
