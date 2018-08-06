@@ -1,30 +1,27 @@
 pragma solidity ^0.4.24;
  
 contract BusinessCard {
+  mapping (bytes32 => string) data;
+  address owner;
+  
+  constructor() public {
+    owner = msg.sender;
+  }
     
-    mapping (bytes32 => string) data;
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
     
-    address owner;
+  function setData(string key, string value) public onlyOwner {
+    data[keccak256(abi.encodePacked(key))] = value;
+  }
     
-    constructor() public {
-        owner = msg.sender;
-    }
+  function transferOwnership(address newOwner) public onlyOwner {
+    owner = newOwner;
+  }
     
-     modifier onlyOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-    
-    function setData(string key, string value) public onlyOwner {
-            data[keccak256(abi.encodePacked(key))] = value;
-    }
-    
-    function transferOwnership(address newOwner) public onlyOwner {
-        	owner = newOwner;
-    }
-    
-    function getData(string key) public constant returns(string) {
-        return data[keccak256(abi.encodePacked(key))];
-    }
- 
+  function getData(string key) public constant returns(string) {
+    return data[keccak256(abi.encodePacked(key))];
+  }
 }
