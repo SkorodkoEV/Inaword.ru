@@ -7,6 +7,7 @@ contract ERC20Basic {
   event Transfer(address indexed from, address indexed to, uint256 value);
 }
 
+
 contract ERC20 is ERC20Basic {
   function allowance(address owner, address spender) public constant returns (uint256);
   function transferFrom(address from, address to, uint256 value) public returns (bool);
@@ -37,6 +38,7 @@ library SafeMath {
   }
 }
 
+
 contract BasicToken is ERC20Basic {
   using SafeMath for uint256;
   
@@ -54,6 +56,7 @@ contract BasicToken is ERC20Basic {
   }  
 } 
  
+
 contract StandardToken is ERC20, BasicToken {
   
   mapping (address => mapping (address => uint256)) internal allowed;
@@ -100,6 +103,7 @@ contract Ownable {
   }
 }
   
+
 contract MintableToken is StandardToken, Ownable {
   event Mint(address indexed to, uint256 amount);
   event MintFinished();
@@ -133,12 +137,11 @@ contract MintableToken is StandardToken, Ownable {
 }
 
 
- contract SimpleTokenCoin is MintableToken {   
+contract SimpleTokenCoin is MintableToken {   
   string public constant name = "Simple Coint Token";
   string public constant symbol = "SCT";
   uint32 public constant decimals = 18;
 }
-
 
 contract Crowdsale is Ownable {
   using SafeMath for uint;
@@ -177,12 +180,27 @@ contract Crowdsale is Ownable {
     token.mint(restricted, restrictedTokens);
     token.finishMinting();
    }
- 
+   
   function createTokens() isUnderHardCap saleIsOn public payable {
     multisig.transfer(msg.value);
     uint tokens = rate.mul(msg.value).div(1 ether);
+    uint bonusTokens = 0;
+    
+    if(now < start + (period * 1 days).div(4)) {
+      bonusTokens = tokens.div(4);
+    }
+    
+    else if(now >= start + (period * 1 days).div(4) && now < start + (period * 1 days).div(4).mul(2)) {
+      bonusTokens = tokens.div(10);
+    }
+    
+    else if(now >= start + (period * 1 days).div(4).mul(2) && now < start + (period * 1 days).div(4).mul(3)) {
+      bonusTokens = tokens.div(20);
+    }
+    
+    tokens += bonusTokens;
     token.mint(msg.sender, tokens);
-   }
+  }
     
   function setSaleAgent() public {
     token.setSaleAgent(address (this));
