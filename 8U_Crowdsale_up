@@ -206,7 +206,7 @@ contract Crowdsale is Ownable {
     
   function setSaleAgent() public {
     token.setSaleAgent(address (this));
-   }
+  }
  
   function() external payable {
     createTokens();
