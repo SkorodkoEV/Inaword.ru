@@ -40,6 +40,7 @@ library SafeMath {
  
 contract BasicToken is ERC20Basic {
   using SafeMath for uint256;
+  
   mapping(address => uint256) balances;
  
   function transfer(address _to, uint256 _value) public returns (bool) {
@@ -98,7 +99,7 @@ contract StandardToken is ERC20, BasicToken {
     return true;
   }
  
-  function () external payable {
+  function() external payable {
     revert();
   }
 }
@@ -107,7 +108,7 @@ contract Ownable {
   address public owner;
   event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
    
-  constructor () public {
+  constructor() public {
     owner = msg.sender;
   }
  
