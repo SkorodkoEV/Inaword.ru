@@ -1,7 +1,9 @@
 pragma solidity ^0.4.24;
  
 contract BusinessCard {
+ 
   mapping (bytes32 => string) data;
+  
   address owner;
     
   constructor() public {
