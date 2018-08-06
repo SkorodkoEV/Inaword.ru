@@ -1,15 +1,13 @@
 pragma solidity ^0.4.24;
  
 contract HelloWorld {
+  string wellcomeString = "Hello, world!";
     
-    string wellcomeString = "Hello, world!";
-    
-    function getData() public view returns (string) {
-        return wellcomeString;
-    }
-    
-    function setData(string newData) public {
-        wellcomeString = newData;
-    }
-    
+  function getData() public view returns (string) {
+    return wellcomeString;
+  }
+  
+  function setData(string newData) public {
+    wellcomeString = newData;
+  }  
 }
