@@ -83,7 +83,7 @@ contract StandardToken is ERC20, BasicToken {
 contract Ownable { 
   address public owner;
  
-  constructor () public {
+  constructor() public {
   owner = msg.sender;
   }
  
@@ -149,7 +149,7 @@ contract Crowdsale is Ownable {
   uint hardcap;
   uint rate;
    
-  constructor () public {
+  constructor() public {
     multisig = 0xEA15Adb66DC92a4BbCcC8Bf32fd25E2e86a2A770;
     restricted = 0xb3eD172CC64839FB0C0Aa06aa129f402e994e7De;
     restrictedPercent = 40;
