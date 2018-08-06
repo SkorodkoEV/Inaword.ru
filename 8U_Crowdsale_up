@@ -47,10 +47,10 @@ contract BasicToken is ERC20Basic {
  
   mapping(address => uint256) balances;
  
- function transfer(address _to, uint256 _value) returns (bool) {
+ function transfer(address _to, uint256 _value) public returns (bool) {
     balances[msg.sender] = balances[msg.sender].sub(_value);
     balances[_to] = balances[_to].add(_value);
-    Transfer(msg.sender, _to, _value);
+    emit Transfer(msg.sender, _to, _value);
     return true;
   }
   
@@ -78,10 +78,10 @@ contract StandardToken is ERC20, BasicToken {
   }
  
  
-  function approve(address _spender, uint256 _value) returns (bool) {
+  function approve(address _spender, uint256 _value) public returns (bool) {
     require((_value == 0) || (allowed[msg.sender][_spender] == 0));
     allowed[msg.sender][_spender] = _value;
-    Approval(msg.sender, _spender, _value);
+    emit Approval(msg.sender, _spender, _value);
     return true;
   }
  
@@ -89,27 +89,26 @@ contract StandardToken is ERC20, BasicToken {
   function allowance(address _owner, address _spender) public constant returns (uint256 remaining) { 
     return allowed[_owner][_spender]; 
   } 
- 
+}
  
   contract Ownable {
+    
   address public owner;
  
-  function Ownable() {
+    constructor () public {
     owner = msg.sender;
   }
  
-
   modifier onlyOwner() {
     require(msg.sender == owner);
     _;
   }
  
- 
-  function transferOwnership(address newOwner) onlyOwner {
+  function transferOwnership(address newOwner) public onlyOwner {
     require(newOwner != address(0));      
     owner = newOwner;
   }
-  
+ 
 }
 
  
@@ -213,7 +212,7 @@ contract Crowdsale is Ownable {
         token.finishMinting();
     }
  
-    function createTokens() isUnderHardCap saleIsOn payable {
+    function createTokens() isUnderHardCap saleIsOn public payable {
         multisig.transfer(msg.value);
         uint tokens = rate.mul(msg.value).div(1 ether);
         token.mint(msg.sender, tokens);
