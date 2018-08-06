@@ -1,13 +1,11 @@
 pragma solidity ^0.4.24;
 
-
 contract ERC20Basic {
   uint256 public totalSupply;
   function balanceOf(address who) public constant returns (uint256);
   function transfer(address to, uint256 value) public returns (bool);
   event Transfer(address indexed from, address indexed to, uint256 value);
 }
- 
 
 contract ERC20 is ERC20Basic {
   function allowance(address owner, address spender) public constant returns (uint256);
@@ -16,16 +14,16 @@ contract ERC20 is ERC20Basic {
   event Approval(address indexed owner, address indexed spender, uint256 value);
  }
  
-library SafeMath {
-  function mul(uint256 a, uint256 b) internal pure returns (uint256) {
-    uint256 c = a * b;
-    assert(a == 0 || c / a == b);
-    return c;
+  library SafeMath {
+    function mul(uint256 a, uint256 b) internal pure returns (uint256) {
+      uint256 c = a * b;
+      assert(a == 0 || c / a == b);
+      return c;
   }
  
- function div(uint256 a, uint256 b) internal pure returns (uint256) {
+  function div(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a / b;
-       return c;
+      return c;
   }
 
   function sub(uint256 a, uint256 b) internal pure returns (uint256) {
@@ -37,7 +35,6 @@ library SafeMath {
     uint256 c = a + b; assert(c >= a);
     return c;
   }
- 
 }
  
 
@@ -55,7 +52,6 @@ contract BasicToken is ERC20Basic {
   function balanceOf(address _owner) public constant returns (uint256 balance) { 
     return balances[_owner]; 
   } 
- 
 } 
  
 
@@ -86,7 +82,6 @@ contract StandardToken is ERC20, BasicToken {
   } 
 }
 
-
 contract Ownable { 
   address public owner;
  
@@ -105,7 +100,6 @@ contract Ownable {
   }
 }
 
-  
 contract MintableToken is StandardToken, Ownable {
   event Mint(address indexed to, uint256 amount);
   event MintFinished();
@@ -136,28 +130,24 @@ contract MintableToken is StandardToken, Ownable {
     emit MintFinished();
     return true;
   }
- 
 }
 
-
- contract SimpleTokenCoin is MintableToken {   
-    string public constant name = "Simple Coint Token";
-    string public constant symbol = "SCT";
-    uint32 public constant decimals = 18;
+contract SimpleTokenCoin is MintableToken {   
+  string public constant name = "Simple Coint Token";
+  string public constant symbol = "SCT";
+  uint32 public constant decimals = 18;
 }
-
 
 contract Crowdsale is Ownable {
-    using SafeMath for uint;
-    address multisig;
-    uint restrictedPercent;
-    address restricted; 
-    SimpleTokenCoin public token = new SimpleTokenCoin();
-    uint start;   
-    uint period;
-    uint hardcap;
-    uint rate;
-    
+  using SafeMath for uint;
+  address multisig;
+  uint restrictedPercent;
+  address restricted; 
+  SimpleTokenCoin public token = new SimpleTokenCoin();
+  uint start;   
+  uint period;
+  uint hardcap;
+  uint rate;
     
   constructor () public {
     multisig = 0xEA15Adb66DC92a4BbCcC8Bf32fd25E2e86a2A770;
@@ -198,6 +188,5 @@ contract Crowdsale is Ownable {
  
   function() external payable {
     createTokens();
-  }
-    
+  } 
 }
