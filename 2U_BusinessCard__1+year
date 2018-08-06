@@ -1,34 +1,32 @@
 pragma solidity 0.4.24;
 
-
 contract BusinessCard {
-    string name = "Lisa";
+  string name = "Lisa";
+  uint age = 26;
+  uint year = 1991;
     
-    uint age = 26;
-    uint year = 1991;
+  function getName() public view returns (string) {
+      return name;
+  }
     
-    function getName() public view returns (string) {
-        return name;
-    }
+  function setName(string newName) public {
+    name = newName;
+  }
     
-    function setName(string newName) public {
-        name = newName;
-    }
+  function getAge() public view returns (uint) {
+    return age;
+  }
     
-    function getAge() public view returns (uint) {
-        return age;
-    }
+  function setAge(uint newAge) public {
+    require(newAge < 130);
+    age = newAge;
+  }
     
-    function setAge(uint newAge) public {
-        require(newAge < 130);
-        age = newAge;
-    }
+  function getYear() public view returns (uint) {
+    return year;
+  }
     
-    function getYear() public view returns (uint) {
-        return year;
-    }
-    
-    function setYear(uint newYear) public {
-        year = newYear;
-    }
+  function setYear(uint newYear) public {
+    year = newYear;
+  }
 }
