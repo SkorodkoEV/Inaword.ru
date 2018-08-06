@@ -1,9 +1,8 @@
 pragma solidity 0.4.24;
  
 contract HelloWorld {
-    
-    function getData() public pure returns (string) {
-        return "Hello, world!";
-    }
-    
+  
+  function getData() public pure returns (string) {
+    return "Hello, world!";
+  }
 }
