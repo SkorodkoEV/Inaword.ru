@@ -98,7 +98,7 @@ contract StandardToken is ERC20, BasicToken {
     return true;
   }
  
-  function () external payable {
+  function() external payable {
     revert();
   }
 }
