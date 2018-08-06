@@ -1,36 +1,31 @@
 pragma solidity ^0.4.24;
  
 contract Ownable {
-    
-    address owner;
+  address owner;
     
   constructor() public {
-        owner = msg.sender;
-    }
+    owner = msg.sender;
+  }
  
-    modifier onlyOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-
+  modifier onlyOwner() {
+    require(msg.sender == owner);
+    _;
+  }
  
-    function transferOwnership(address newOwner) public onlyOwner {
-        owner = newOwner;
-    }
-    
+  function transferOwnership(address newOwner) public onlyOwner {
+    owner = newOwner;
+  } 
 }
  
 contract BusinessCard is Ownable {
-    
-    mapping (bytes32 => string) data;
- 
-    function setData(string key, string value) public onlyOwner {
-        data[keccak256(abi.encodePacked(key))] = value;
-    }
- 
-    function getData(string key) public constant returns(string) {
-        return data[keccak256(abi.encodePacked(key))];
-    }
- 
+  mapping (bytes32 => string) data;
+  
+  function setData(string key, string value) public onlyOwner {
+    data[keccak256(abi.encodePacked(key))] = value;
+  }
+  
+  function getData(string key) public constant returns(string) {
+    return data[keccak256(abi.encodePacked(key))];
+  }
 }
 
