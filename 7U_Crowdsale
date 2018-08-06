@@ -175,13 +175,23 @@ contract MintableToken is StandardToken, Ownable {
  
   
 }
- 
+
+
+ contract SimpleTokenCoin is MintableToken {
+    
+    string public constant name = "Simple Coint Token";
+    
+    string public constant symbol = "SCT";
+    
+    uint32 public constant decimals = 18;
+    
+}
 
 contract Crowdsale {
     
     address owner;
     
-   MintableToken public token = new MintableToken();
+   SimpleTokenCoin public token = new SimpleTokenCoin();
 
     uint start = 1500379200;
     
@@ -192,7 +202,7 @@ contract Crowdsale {
    }
 
    function setSaleAgent() public {
-         token.setSaleAgent(adress(this));
+         token.setSaleAgent(address (this));
    }
 
     function() external payable {
