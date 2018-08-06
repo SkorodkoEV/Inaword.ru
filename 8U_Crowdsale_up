@@ -1,5 +1,6 @@
 pragma solidity ^0.4.24;
 
+
 contract ERC20Basic {
   uint256 public totalSupply;
   function balanceOf(address who) public constant returns (uint256);
@@ -13,7 +14,7 @@ contract ERC20 is ERC20Basic {
   function transferFrom(address from, address to, uint256 value) public returns (bool);
   function approve(address spender, uint256 value) public returns (bool);
   event Approval(address indexed owner, address indexed spender, uint256 value);
-}
+ }
  
 
 library SafeMath {
@@ -22,6 +23,7 @@ library SafeMath {
     assert(a == 0 || c / a == b);
     return c;
   }
+ 
  
   function div(uint256 a, uint256 b) internal pure returns (uint256) {
     uint256 c = a / b;
@@ -34,6 +36,7 @@ library SafeMath {
     return a - b; 
   } 
   
+  
   function add(uint256 a, uint256 b) internal pure returns (uint256) { 
     uint256 c = a + b; assert(c >= a);
     return c;
@@ -44,10 +47,10 @@ library SafeMath {
 
 contract BasicToken is ERC20Basic {
   using SafeMath for uint256;
- 
   mapping(address => uint256) balances;
  
- function transfer(address _to, uint256 _value) public returns (bool) {
+ 
+  function transfer(address _to, uint256 _value) public returns (bool) {
     balances[msg.sender] = balances[msg.sender].sub(_value);
     balances[_to] = balances[_to].add(_value);
     emit Transfer(msg.sender, _to, _value);
@@ -58,6 +61,7 @@ contract BasicToken is ERC20Basic {
   function balanceOf(address _owner) public constant returns (uint256 balance) { 
     return balances[_owner]; 
   } 
+ 
 } 
  
 
@@ -66,7 +70,7 @@ contract StandardToken is ERC20, BasicToken {
   mapping (address => mapping (address => uint256)) internal allowed;
  
   
-   function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
+  function transferFrom(address _from, address _to, uint256 _value) public returns (bool) {
     require(_to != address(0));
     require(_value <= balances[_from]);
     require(_value <= allowed[_from][msg.sender]); 
@@ -90,13 +94,13 @@ contract StandardToken is ERC20, BasicToken {
     return allowed[_owner][_spender]; 
   } 
 }
- 
-  contract Ownable {
-    
+
+
+contract Ownable { 
   address public owner;
  
-    constructor () public {
-    owner = msg.sender;
+  constructor () public {
+  owner = msg.sender;
   }
  
   modifier onlyOwner() {
@@ -108,30 +112,27 @@ contract StandardToken is ERC20, BasicToken {
     require(newOwner != address(0));      
     owner = newOwner;
   }
- 
 }
 
- 
- 
-contract MintableToken is StandardToken, Ownable {
-    
-  event Mint(address indexed to, uint256 amount);
   
+contract MintableToken is StandardToken, Ownable {
+  event Mint(address indexed to, uint256 amount);
   event MintFinished();
- 
   bool public mintingFinished = false;
- 
   address public saleAgent;
+ 
  
   function setSaleAgent(address newSaleAgnet) public {
     require(msg.sender == saleAgent || msg.sender == owner);
     saleAgent = newSaleAgnet;
   }
   
+  
   modifier canMint() {
     require(!mintingFinished);
     _;
   }
+ 
  
   function mint(address _to, uint256 _amount) public returns (bool) {
     require(msg.sender == saleAgent && !mintingFinished);
@@ -152,78 +153,63 @@ contract MintableToken is StandardToken, Ownable {
 }
 
 
- contract SimpleTokenCoin is MintableToken {
-    
+ contract SimpleTokenCoin is MintableToken {   
     string public constant name = "Simple Coint Token";
-    
     string public constant symbol = "SCT";
-    
     uint32 public constant decimals = 18;
-    
 }
 
-contract Crowdsale is Ownable {
-    
-    using SafeMath for uint;
-    
-    address multisig;
- 
-    uint restrictedPercent;
- 
-    address restricted;
-    
-   SimpleTokenCoin public token = new SimpleTokenCoin();
 
-    uint start;
-    
+contract Crowdsale is Ownable {
+    using SafeMath for uint;
+    address multisig;
+    uint restrictedPercent;
+    address restricted; 
+    SimpleTokenCoin public token = new SimpleTokenCoin();
+    uint start;   
     uint period;
- 
     uint hardcap;
- 
     uint rate;
     
-    constructor () public {
-        multisig = 0xEA15Adb66DC92a4BbCcC8Bf32fd25E2e86a2A770;
-        restricted = 0xb3eD172CC64839FB0C0Aa06aa129f402e994e7De;
-        restrictedPercent = 40;
-        rate = 100000000000000000000;
-        start = 1533481200;
-        period = 28;
-        hardcap = 10000000000000000000000;
-    }
-    
-
-   
+  constructor () public {
+    multisig = 0xEA15Adb66DC92a4BbCcC8Bf32fd25E2e86a2A770;
+    restricted = 0xb3eD172CC64839FB0C0Aa06aa129f402e994e7De;
+    restrictedPercent = 40;
+    rate = 100000000000000000000;
+    start = 1533481200;
+    period = 28;
+    hardcap = 10000000000000000000000;
+  }
 
   modifier saleIsOn() {
-    	require(now > start && now < start + period * 1 days);
-    	_;
-    }
+    require(now > start && now < start + period * 1 days);
+    _;
+  }
 	
-    modifier isUnderHardCap() {
-        require(multisig.balance <= hardcap);
-        _;
-    }
+  modifier isUnderHardCap() {
+    require(multisig.balance <= hardcap);
+    _;
+  }
  
-    function finishMinting() public onlyOwner {
-        uint issuedTokenSupply = token.totalSupply();
-        uint restrictedTokens = issuedTokenSupply.mul(restrictedPercent).div(100 - restrictedPercent);
-        token.mint(restricted, restrictedTokens);
-        token.finishMinting();
-    }
- 
-    function createTokens() isUnderHardCap saleIsOn public payable {
-        multisig.transfer(msg.value);
-        uint tokens = rate.mul(msg.value).div(1 ether);
-        token.mint(msg.sender, tokens);
-    }
-    
-    function setSaleAgent() public {
-         token.setSaleAgent(address (this));
+  function finishMinting() public onlyOwner {
+    uint issuedTokenSupply = token.totalSupply();
+    uint restrictedTokens = issuedTokenSupply.mul(restrictedPercent).div(100 - restrictedPercent);
+    token.mint(restricted, restrictedTokens);
+    token.finishMinting();
    }
  
-    function() external payable {
-        createTokens();
-    }
+  function createTokens() isUnderHardCap saleIsOn public payable {
+    multisig.transfer(msg.value);
+    uint tokens = rate.mul(msg.value).div(1 ether);
+    token.mint(msg.sender, tokens);
+   }
+    
+  function setSaleAgent() public {
+    token.setSaleAgent(address (this));
+   }
+ 
+  function() external payable {
+    createTokens();
+  }
     
 }
